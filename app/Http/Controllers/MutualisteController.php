@@ -10,7 +10,7 @@ class MutualisteController extends Controller
 {
     public function index()
     {
-        $mutualistes = Mutualiste::with('assure')->get();
+        $mutualistes = Mutualiste::withCount('personnesACharge')->get();
         return view('mutualistes.index', compact('mutualistes'));
     }
 
@@ -23,8 +23,12 @@ class MutualisteController extends Controller
     {
         $assureData = $request->only([
             'nomAssure', 'prenomAssure', 'dateNaissanceAssure', 'sexeAssure',
-            'telephoneAssure', 'adresseAssure', 'statutAssure', 'photoAssure'
+            'telephoneAssure', 'adresseAssure', 'statutAssure'
         ]);
+
+        if ($request->hasFile('photoAssure')) {
+            $assureData['photoAssure'] = file_get_contents($request->file('photoAssure')->getRealPath());
+        }
 
         $assure = Assure::create($assureData);
 
@@ -34,6 +38,10 @@ class MutualisteController extends Controller
         ]);
         $mutualisteData['idAssure'] = $assure->idAssure;
 
+        if ($request->hasFile('documentMutualiste')) {
+            $assureData['documentMutualiste'] = file_get_contents($request->file('documentMutualiste')->getRealPath());
+        }
+
         Mutualiste::create($mutualisteData);
 
         return redirect()->route('mutualistes.index')->with('success', 'Mutualiste créé avec succès');
@@ -41,31 +49,41 @@ class MutualisteController extends Controller
 
     public function show($id)
     {
-        $mutualiste = Mutualiste::with('assure')->findOrFail($id);
+        $mutualiste = Mutualiste::withCount('PersonnesACharge')->where('idMutualiste', $id)->first();
         return view('mutualistes.show', compact('mutualiste'));
     }
 
     public function edit($id)
     {
-        $mutualiste = Mutualiste::with('assure')->findOrFail($id);
+        $mutualiste = Mutualiste::with('assure')->where('idMutualiste', $id)->first();
         return view('mutualistes.edit', compact('mutualiste'));
     }
 
     public function update(Request $request, $id)
     {
-        $mutualiste = Mutualiste::findOrFail($id);
-        $assure = Assure::findOrFail($mutualiste->idAssure);
+        $mutualiste = Mutualiste::where('idMutualiste', $id)->first();
+        $assure = Assure::where('idAssure', $mutualiste->idAssure);
 
         $assureData = $request->only([
             'nomAssure', 'prenomAssure', 'dateNaissanceAssure', 'sexeAssure',
-            'telephoneAssure', 'adresseAssure', 'statutAssure', 'photoAssure'
+            'telephoneAssure', 'adresseAssure', 'statutAssure'
         ]);
+
+        if ($request->hasFile('photoAssure')) {
+            $assureData['photoAssure'] = file_get_contents($request->file('photoAssure')->getRealPath());
+        }
+
         $assure->update($assureData);
 
         $mutualisteData = $request->only([
             'matriculeMutualiste', 'categorieMutualiste',
             'serviceMutualiste', 'fonctionMutualiste', 'depensesSante', 'documentMutualiste'
         ]);
+
+        if ($request->hasFile('documentMutualiste')) {
+            $assureData['documentMutualiste'] = file_get_contents($request->file('documentMutualiste')->getRealPath());
+        }
+
         $mutualiste->update($mutualisteData);
 
         return redirect()->route('mutualistes.index')->with('success', 'Mutualiste mis à jour avec succès');
