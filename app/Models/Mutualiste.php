@@ -10,8 +10,8 @@ class Mutualiste extends Model
     use HasFactory;
 
     protected $table = 'mutualistes';
-    protected $primaryKey = ['idAssure', 'idMutualiste'];
-    public $incrementing = false;
+    protected $primaryKey = 'idMutualiste';
+
     protected $fillable = [
         'idAssure', 'idMutualiste', 'matriculeMutualiste', 'categorieMutualiste',
         'serviceMutualiste', 'fonctionMutualiste', 'depensesSante', 'documentMutualiste'
@@ -21,5 +21,9 @@ class Mutualiste extends Model
     {
         return $this->belongsTo(Assure::class, 'idAssure');
     }
-}
 
+    public function personnesACharge()
+    {
+        return $this->hasMany(PersonneACharge::class, 'idMutualiste');
+    }
+}

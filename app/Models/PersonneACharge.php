@@ -10,8 +10,8 @@ class PersonneACharge extends Model
     use HasFactory;
 
     protected $table = 'personnes_a_charge';
-    protected $primaryKey = ['idAssure', 'idPAC'];
-    public $incrementing = false;
+    protected $primaryKey = 'idPAC';
+
     protected $fillable = [
         'idAssure', 'idPAC', 'Mut_idAssure', 'idMutualiste', 'affilliationPAC',
         'documentAffiliationPAC', 'certificatScolarite'
@@ -24,7 +24,6 @@ class PersonneACharge extends Model
 
     public function mutualiste()
     {
-        return $this->belongsTo(Mutualiste::class, ['Mut_idAssure', 'idMutualiste']);
+        return $this->belongsTo(Mutualiste::class, 'idMutualiste');
     }
 }
-
