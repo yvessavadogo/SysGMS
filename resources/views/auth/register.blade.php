@@ -109,7 +109,7 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="statutUtilisateur" class="col-md-4 col-form-label text-md-end">Rôle</label>
+                            <label for="statutUtilisateur" class="col-md-4 col-form-label text-md-end">Statut</label>
 
                             <div class="col-md-6">
                                 <select id="statutUtilisateur" class="form-control @error('statutUtilisateur') is-invalid @enderror" name="statutUtilisateur" required>

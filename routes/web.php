@@ -30,6 +30,6 @@ Route::get('/assures', [AssureController::class, 'index'])->name('assures.index'
 
 Route::resource('mutualistes', MutualisteController::class);
 
-Route::resource('personnes_a_charge', PersonneAChargeController::class);
+Route::resource('personnes_a_charge', PersonneAChargeController::class)->except(['index','create']);
 Route::get('personnes_a_charge/{idMutualiste}/{idAssure}/index', [PersonneAChargeController::class, 'index'])->name('personnes_a_charge.index');
 Route::get('personnes_a_charge/{idMutualiste}/{idAssure}/create', [PersonneAChargeController::class, 'create'])->name('personnes_a_charge.create');
