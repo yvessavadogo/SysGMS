@@ -10,19 +10,17 @@ use Illuminate\Support\Facades\Response;
 
 class PersonneAChargeController extends Controller
 {
-    public function index($idMutualiste, $idAssure)
+    public function index($idMutualiste)
     {
-        $Mut_idAssure = $idAssure;
         $idMutualiste = $idMutualiste;
-        $personnesACharge = PersonneACharge::with('assure', 'mutualiste')->where('idMutualiste', $idMutualiste)->where('Mut_idAssure', $Mut_idAssure)->get();
-        $mutualiste = Mutualiste::with('assure')->where('idMutualiste', $idMutualiste)->where('idAssure', $Mut_idAssure)->first();
-        return view('personnes_a_charge.index', compact('personnesACharge', 'mutualiste', 'Mut_idAssure','idMutualiste'));
+        $personnesACharge = PersonneACharge::with('assure', 'mutualiste')->where('idMutualiste', $idMutualiste)->get();
+        $mutualiste = Mutualiste::with('assure')->where('idMutualiste', $idMutualiste)->first();
+        return view('personnes_a_charge.index', compact('personnesACharge', 'mutualiste','idMutualiste'));
     }
 
-    public function create($idMutualiste, $idAssure)
+    public function create($idMutualiste )
     {
-        $Mut_idAssure = $idAssure;
-        return view('personnes_a_charge.create', compact('Mut_idAssure','idMutualiste'));
+        return view('personnes_a_charge.create', compact('idMutualiste'));
     }
 
     public function store(Request $request)
@@ -39,11 +37,15 @@ class PersonneAChargeController extends Controller
         $assure = Assure::create($assureData);
 
         $personneAChargeData = $request->only([
-            'idPAC', 'Mut_idAssure', 'idMutualiste', 'affilliationPAC',
+            'idPAC', 'idMutualiste', 'affilliationPAC',
             'documentAffiliationPAC', 'certificatScolarite'
         ]);
 
         $personneAChargeData['idAssure'] = $assure->idAssure;
+
+        $mutualiste = Mutualiste::findOrFail($request->idMutualiste);
+        
+        $personneAChargeData['Mut_idAssure'] = $mutualiste->idAssure;
 
         if ($request->hasFile('documentAffiliationPAC')) {
             $assureData['documentAffiliationPAC'] = file_get_contents($request->file('documentAffiliationPAC')->getRealPath());
@@ -56,7 +58,7 @@ class PersonneAChargeController extends Controller
 
         PersonneACharge::create($personneAChargeData);
 
-        return redirect()->route('personnes_a_charge.index', ['idMutualiste' => $request->idMutualiste, 'idAssure' => $request->Mut_idAssure])->with('success', 'Personne à charge créée avec succès');
+        return redirect()->route('personnes_a_charge.index', $request->idMutualiste)->with('success', 'Personne à charge créée avec succès');
     }
 
     public function show($id)

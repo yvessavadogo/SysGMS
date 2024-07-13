@@ -48,8 +48,6 @@
 
         <!-- Champs pour les informations de la personne à charge -->
 
-        <input type="number" class="form-control" id="Mut_idAssure" name="Mut_idAssure" value="{{ $Mut_idAssure }}" hidden required>
-
         <input type="number" class="form-control" id="idMutualiste" name="idMutualiste" value="{{ $idMutualiste }}" hidden required>
 
         <div class="form-group">
