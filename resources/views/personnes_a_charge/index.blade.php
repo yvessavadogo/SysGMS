@@ -4,7 +4,7 @@
 @section('content')
 <div class="container">
     <h2>Liste des Personnes à Charge de {{ $mutualiste->assure->nomAssure }} {{ $mutualiste->assure->prenomAssure }}</h2>
-    <a href="{{ route('personnes_a_charge.create', ['idMutualiste' => $idMutualiste, 'idAssure' => $Mut_idAssure]) }}" class="btn btn-primary">Ajouter une Personne à charge</a>
+    <a href="{{ route('personnes_a_charge.create', $idMutualiste) }}" class="btn btn-primary">Ajouter une Personne à charge</a>
     <table class="table table-striped mt-3">
         <thead>
             <tr>
