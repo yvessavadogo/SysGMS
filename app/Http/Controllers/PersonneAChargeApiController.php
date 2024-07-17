@@ -14,7 +14,7 @@ class PersonneAChargeApiController extends Controller
     {
 
         $personnesACharge = DB::table('personnes_a_charge')
-        ->rightJoin('assures', 'personnes_a_charge.idAssure', '=', 'assures.idAssure')
+        ->leftJoin('assures', 'personnes_a_charge.idAssure', '=', 'assures.idAssure')
         ->select(
             'assures.idAssure',
             'personnes_a_charge.idPAC',
