@@ -12,7 +12,7 @@ class MutualisteApiController extends Controller
     public function index()
     {
         $mutualistes = DB::table('mutualistes')
-            ->rightJoin('assures', 'mutualistes.idAssure', '=', 'assures.idAssure')
+            ->leftJoin('assures', 'mutualistes.idAssure', '=', 'assures.idAssure')
             ->leftJoin('personnes_a_charge', 'mutualistes.idMutualiste', '=', 'personnes_a_charge.idMutualiste')  // Jointure avec personnes_a_charge
             ->select(
                 'assures.idAssure',
@@ -95,7 +95,7 @@ class MutualisteApiController extends Controller
     public function show($id)
     {
         $mutualiste = DB::table('mutualistes')
-            ->rightJoin('assures', 'mutualistes.idAssure', '=', 'assures.idAssure')
+            ->leftJoin('assures', 'mutualistes.idAssure', '=', 'assures.idAssure')
             ->leftJoin('personnes_a_charge', 'mutualistes.idMutualiste', '=', 'personnes_a_charge.idMutualiste')  // Jointure avec personnes_a_charge
             ->select(
                 'assures.idAssure',
