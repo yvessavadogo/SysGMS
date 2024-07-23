@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider and all of them will
 | be assigned to the "web" middleware group. Make something great!
 |
-*/
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -33,3 +33,4 @@ Route::resource('mutualistes', MutualisteController::class);
 Route::resource('personnes_a_charge', PersonneAChargeController::class)->except('index','create');
 Route::get('personnes_a_charge/{idMutualiste}/index', [PersonneAChargeController::class, 'index'])->name('personnes_a_charge.index');
 Route::get('personnes_a_charge/{idMutualiste}/create', [PersonneAChargeController::class, 'create'])->name('personnes_a_charge.create');
+*/
